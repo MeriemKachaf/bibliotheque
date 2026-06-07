@@ -64,7 +64,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" name="password" class="form-control"
-                               placeholder="Min. 8 car., lettres et chiffres" required>
+                               placeholder="Min. 12 car., maj., chiffres et symboles" required>
                     </div>
                 </div>
                 <div class="mb-4">
