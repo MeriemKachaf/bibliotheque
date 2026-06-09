@@ -27,7 +27,7 @@ class LivreRequest extends FormRequest
             'description'      => 'nullable|string',
             'quantite'         => 'required|integer|min:0',
             'categorie_id'     => 'nullable|exists:categories,id',
-            'photo'            => 'nullable|image|max:2048',
+            'photo'            => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'supprimer_photo'  => 'nullable|boolean',
         ];
     }

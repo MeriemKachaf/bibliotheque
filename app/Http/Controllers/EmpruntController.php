@@ -83,6 +83,10 @@ class EmpruntController extends Controller
 
     public function retour(Emprunt $emprunt)
     {
+        if (!auth()->user()->isAdmin() && $emprunt->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         $emprunt->update([
             'statut'                => 'rendu',
             'date_retour_effective' => now(),

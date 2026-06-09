@@ -25,6 +25,10 @@ class UserController extends Controller
 
     public function toggleRole(User $user)
     {
+        if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
+            return back()->with('error', 'Impossible de rétrograder le dernier administrateur.');
+        }
+
         $user->update(['role' => $user->isAdmin() ? 'membre' : 'admin']);
         return back()->with('success', 'Rôle modifié.');
     }

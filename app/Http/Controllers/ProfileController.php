@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
+use App\Models\PasswordHistory;
+use App\Rules\NotInPasswordHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,11 +33,36 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request)
     {
+        $user = auth()->user();
+
         $request->validate([
             'current_password' => 'required|current_password',
-            'password'         => ['required', 'confirmed', Password::min(12)->mixedCase()->numbers()->symbols()],
+            'password'         => [
+                'required',
+                'confirmed',
+                Password::min(12)->mixedCase()->numbers()->symbols(),
+                new NotInPasswordHistory($user->id),
+            ],
         ]);
-        auth()->user()->update(['password' => Hash::make($request->password)]);
+
+        // Sauvegarder l'ancien mot de passe dans l'historique
+        PasswordHistory::create([
+            'user_id'  => $user->id,
+            'password' => $user->getRawOriginal('password'),
+        ]);
+
+        // Ne garder que les 3 dernières entrées
+        $idsToKeep = PasswordHistory::where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->take(3)
+            ->pluck('id');
+
+        PasswordHistory::where('user_id', $user->id)
+            ->whereNotIn('id', $idsToKeep)
+            ->delete();
+
+        $user->update(['password' => Hash::make($request->password)]);
+
         return back()->with('success', 'Mot de passe modifié.');
     }
 
