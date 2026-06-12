@@ -10,18 +10,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\UserController;
 
+// Redirige la page d'accueil vers le dashboard
 Route::get('/', fn() => redirect()->route('dashboard'));
 
-// Authentification (guests uniquement)
+// ── ROUTES PUBLIQUES — accessibles sans être connecté ───────────────────────
 Route::middleware('guest')->group(function () {
     Route::get('/login',     [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login',    [AuthController::class, 'login'])->middleware('throttle:5,1');
+    Route::post('/login',    [AuthController::class, 'login'])->middleware('throttle:5,1'); // max 5 tentatives par minute
     Route::get('/register',  [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+// ── ROUTES PROTÉGÉES — il faut être connecté ────────────────────────────────
 Route::middleware('auth')->group(function () {
 
     // Commun (admin + membre)
@@ -34,7 +36,7 @@ Route::middleware('auth')->group(function () {
     // Catalogue livres
     Route::get('/livres', [LivreController::class, 'index'])->name('livres.index');
 
-    // ── ADMIN seulement ──────────────────────────────────────────────
+    // ── ADMIN seulement — middleware 'admin' bloque les membres ─────
     Route::middleware('admin')->group(function () {
         // Routes statiques AVANT les routes dynamiques {livre}
         Route::get('/livres/create',        [LivreController::class, 'create'])->name('livres.create');
@@ -63,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/emprunts/export-pdf',        [EmpruntController::class, 'exportPdf'])->name('emprunts.exportPdf');
     Route::post('/emprunts/{emprunt}/retour', [EmpruntController::class, 'retour'])->name('emprunts.retour');
 
-    // ── MEMBRE seulement ─────────────────────────────────────────────
+    // ── MEMBRE seulement — middleware 'membre' bloque les admins ────
     Route::middleware('membre')->group(function () {
         // Route statique AVANT la route dynamique {emprunt}
         Route::get('/emprunts/create', [EmpruntController::class, 'create'])->name('emprunts.create');
