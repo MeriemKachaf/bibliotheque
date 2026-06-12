@@ -36,8 +36,8 @@
                 @if($errors->has('name') || $errors->has('email') || $errors->has('telephone'))
                     <div class="alert alert-danger py-2">
                         <ul class="mb-0 ps-3">
-                            @foreach($errors->only(['name','email','telephone']) as $error)
-                                <li class="small">{{ $error }}</li>
+                            @foreach(['name','email','telephone'] as $field)
+                                @error($field)<li class="small">{{ $message }}</li>@enderror
                             @endforeach
                         </ul>
                     </div>
@@ -88,8 +88,8 @@
                 @if($errors->has('current_password') || $errors->has('password'))
                     <div class="alert alert-danger py-2">
                         <ul class="mb-0 ps-3">
-                            @foreach($errors->only(['current_password','password']) as $error)
-                                <li class="small">{{ $error }}</li>
+                            @foreach(['current_password','password'] as $field)
+                                @error($field)<li class="small">{{ $message }}</li>@enderror
                             @endforeach
                         </ul>
                     </div>
