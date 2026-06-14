@@ -34,7 +34,7 @@
             <form action="{{ route('register') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label class="form-label">Nom complet</label>
+                    <label class="form-label">Nom complet <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
                         <input type="text" name="name" class="form-control"
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Adresse email</label>
+                    <label class="form-label">Adresse email <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                         <input type="email" name="email" class="form-control"
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Mot de passe</label>
+                    <label class="form-label">Mot de passe <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" name="password" class="form-control"
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label">Confirmer le mot de passe</label>
+                    <label class="form-label">Confirmer le mot de passe <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                         <input type="password" name="password_confirmation" class="form-control"
