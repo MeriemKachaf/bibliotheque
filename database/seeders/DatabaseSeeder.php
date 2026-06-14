@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             'email'     => 'admin@bibliotheque.fr',
             'telephone' => '0600000000',
             'role'      => 'admin',
-            'password'  => Hash::make('admin1234'),
+            'password'  => Hash::make(env('ADMIN_PASSWORD', 'ChangeMoi@2026!')),
         ]);
 
         $categories = [
