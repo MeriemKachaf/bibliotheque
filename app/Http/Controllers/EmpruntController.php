@@ -26,7 +26,7 @@ class EmpruntController extends Controller
         } elseif ($search) {
             // L'admin peut rechercher par nom d'utilisateur ou titre de livre
             $query->whereHas('user', fn($q) => $q->where('name', 'like', "%$search%"))
-                  ->orWhereHas('livre', fn($q) => $q->where('titre', 'like', "%$search%"));
+                ->orWhereHas('livre', fn($q) => $q->where('titre', 'like', "%$search%"));
         }
 
         if ($statut) {
